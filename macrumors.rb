@@ -22,8 +22,8 @@ xml.rss :version => 0.91 do
     (@h / '.story').each do |s|
       xml.item do
         xml.title s.at('h3').inner_text
-        xml.pubDate s.at('.datetag').inner_html.sub(/<br.*/, '')
         xml.link s.at('h3 a')['href']
+        xml.pubDate s.at('.datetag').inner_html.sub(/<br.*/, '')
         xml.description s.at('.storybody').inner_html
       end
     end
