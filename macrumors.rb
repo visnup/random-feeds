@@ -1,6 +1,28 @@
 require 'rubygems'
 require 'sinatra'
+require 'builder'
+require 'open-uri'
+require 'hpricot'
 
 get '/' do
-  'hello'
+  @h = open 'http://www.macrumors.com' do |f| Hpricot f end
+
+  content_type 'application/xml', :charset => 'utf-8'
+  builder :index
+end
+
+__END__
+@@ index
+xml.instruct!
+xml.rss do
+  xml.channel do
+    (@h / '.story').each do |s|
+      xml.item do
+        xml.title s.at('h3').inner_text
+        xml.pubDate s.at('.datetag').inner_html.sub(/<br.*/, '')
+        xml.link s.at('h3 a').attributes['href']
+        xml.description s.at('.storybody').inner_html
+      end
+    end
+  end
 end
