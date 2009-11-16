@@ -4,6 +4,10 @@ require 'builder'
 require 'open-uri'
 require 'hpricot'
 
+get '/' do
+  haml :index
+end
+
 get '/macrumors' do
   @h = open 'http://www.macrumors.com' do |f| Hpricot f end
 
@@ -12,6 +16,14 @@ get '/macrumors' do
 end
 
 __END__
+@@ index
+%html
+  %body
+    %h1= 'some fixed feeds'
+    %ul
+      %li
+        %a{ :href => '/macrumors' }= 'macrumors'
+
 @@ macrumors
 xml.instruct!
 xml.rss :version => 0.91 do
