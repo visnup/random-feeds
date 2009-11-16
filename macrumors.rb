@@ -4,15 +4,15 @@ require 'builder'
 require 'open-uri'
 require 'hpricot'
 
-get '/' do
+get '/macrumors' do
   @h = open 'http://www.macrumors.com' do |f| Hpricot f end
 
   content_type 'application/xml', :charset => 'utf-8'
-  builder :index
+  builder :macrumors
 end
 
 __END__
-@@ index
+@@ macrumors
 xml.instruct!
 xml.rss :version => 0.91 do
   xml.channel do
